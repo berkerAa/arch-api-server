@@ -5,7 +5,7 @@
     "module": "commonjs",
     "lib": ["es2020"],
     "outDir": "./dist",
-    "rootDir": "./src",
+    "rootDir": "..",
     "removeComments": true,
     "strict": true,
 
@@ -14,7 +14,7 @@
     "strictNullChecks": true,
     "strictFunctionTypes": true,
     "strictBindCallApply": true,
-    "strictPropertyInitialization": true,
+    "strictPropertyInitialization": false,
     "noImplicitThis": true,
     "alwaysStrict": true,
 
@@ -33,7 +33,11 @@
 
     /* Advanced Options */
     "skipLibCheck": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+
+    /* Experimental Options */
+    "experimentalDecorators": true, // Enable support for decorators
+    "emitDecoratorMetadata": true, // Emit design-type metadata for decorated declarations
   },
   "include": ["src/**/*.ts", ".eslintrc.js"],
   "exclude": ["node_modules", "dist"]
