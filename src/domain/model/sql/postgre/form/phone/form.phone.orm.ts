@@ -1,6 +1,7 @@
 import { FormSqlBaseOrm } from "../form.sql.base.orm";
 import { FormPhoneSqlEntityProtocol } from "../../../../../../../../contract/protocol/domain/sql/postgre/form/phone/form.phone.sql.entity.protocol";
-import { Column, Entity } from "typeorm";
+import { Column, Entity, OneToMany } from "typeorm";
+import { AttributeUserOrm } from "../../attribute/user/attribute.user.orm";
 @Entity({
   name: "FormPhone",
 })
@@ -26,4 +27,8 @@ export class FormPhoneOrm
     nullable: false,
   })
   SubscriberNumber: string;
+  @OneToMany(() => AttributeUserOrm, (attributeUser) => attributeUser.email, {
+    cascade: ["insert", "update"],
+  })
+  userAttributeEntity: Array<AttributeUserOrm>;
 }
