@@ -1,4 +1,4 @@
-import { MockBaseProtocol } from "../../../../contract/protocol/domain/mock/mock.base.protocol";
+import { MockBaseProtocol } from "../../../../contract/protocol/application/mock/mock.base.protocol";
 
 export abstract class MockBaseAbstract<Entity>
   implements MockBaseProtocol<Entity>
