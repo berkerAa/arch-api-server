@@ -1,8 +1,10 @@
 import { MockBaseProtocol } from "../../../../contract/protocol/application/mock/mock.base.protocol";
+import { ObjectLiteral } from "typeorm";
 
 export abstract class MockBaseAbstract<Entity>
   implements MockBaseProtocol<Entity>
 {
+  config: ObjectLiteral;
   configureEntity: Partial<Entity>;
   protected entity: Entity;
   constructor() {

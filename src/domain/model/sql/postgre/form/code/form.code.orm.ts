@@ -17,9 +17,6 @@ export class FormCodeOrm
   @OneToMany(
     () => ConfirmationEmailCodeOrm,
     (confirmationEmailCodeOrm) => confirmationEmailCodeOrm.code,
-    {
-      cascade: ["insert", "update"],
-    },
   )
   confirmationEmailEntry: Array<ConfirmationEmailCodeOrm>;
 }

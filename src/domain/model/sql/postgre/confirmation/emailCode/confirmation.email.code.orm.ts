@@ -20,7 +20,9 @@ export class ConfirmationEmailCodeOrm
   })
   EmailId: number;
   @JoinColumn({ name: "CodeId" })
-  @ManyToOne(() => FormCodeOrm, (formCodeOrm) => formCodeOrm.Id)
+  @ManyToOne(() => FormCodeOrm, (formCodeOrm) => formCodeOrm.Id, {
+    cascade: ["insert", "update"],
+  })
   code: FormCodeOrm;
   @JoinColumn({ name: "EmailId" })
   @ManyToOne(() => FormEmailOrm, (formEmailOrm) => formEmailOrm.Id)
