@@ -3,11 +3,8 @@ import { FormEmailOrm } from "../../../../../../../../domain/model/sql/postgre/f
 import { FormEmailMockGenerator } from "../../../../../../../mock/form/email/form.email.mock.generator";
 import { FormEmailService } from "../../../../../../../../domain/model/sql/postgre/form/email/form.email.service";
 import { FormEmailFindQuery } from "./form.email.find.query";
-import { Test } from "@nestjs/testing";
-import { FormEmailMockModule } from "../../../../../../../mock/form/email/form.email.mock.module";
 import { FormEmailFindModule } from "./form.email.find.module";
-import { QueryRunner } from "typeorm";
-import { FormEmailModule } from "../../../../../../../../domain/model/sql/postgre/form/email/form.email.module";
+import { FormEmailMockModule } from "../../../../../../../mock/form/email/form.email.mock.module";
 
 describe("Find Email Query Spec", () => {
   let testFactory: TestEnvFactory<
@@ -17,34 +14,11 @@ describe("Find Email Query Spec", () => {
     FormEmailFindQuery
   >;
   beforeAll(async () => {
-    const moduleCompile = await Test.createTestingModule({
-      imports: [FormEmailModule, FormEmailFindModule, FormEmailMockModule],
-      providers: [TestEnvFactory],
-    })
-      .compile()
-      .then((module) => ({
-        factory:
-          module.resolve<
-            TestEnvFactory<
-              FormEmailOrm,
-              FormEmailMockGenerator,
-              FormEmailService,
-              FormEmailFindQuery
-            >
-          >(TestEnvFactory),
-        testObject: module.resolve(FormEmailFindQuery),
-        generator: module.resolve(FormEmailMockGenerator),
-      }));
-    testFactory = await moduleCompile.factory;
-    testFactory.generator = await moduleCompile.generator;
-    testFactory.testObject = await moduleCompile.testObject;
-    testFactory.queryInstance = testFactory.testObject
-      .getService()
-      .getQueryRunner() as QueryRunner;
-    await testFactory.queryInstance
-      .connect()
-      .then(() => testFactory.queryInstance.startTransaction());
-    testFactory.connectDependencies2Transition([testFactory.testObject]);
+    testFactory = await TestEnvFactory.createModule(
+      [FormEmailFindModule, FormEmailMockModule],
+      FormEmailFindQuery,
+      FormEmailMockGenerator,
+    );
     testFactory.generatedEntity = await testFactory.queryInstance.manager.save(
       FormEmailOrm,
       testFactory.generator.get(),
