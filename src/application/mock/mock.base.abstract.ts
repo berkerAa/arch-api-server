@@ -5,6 +5,9 @@ export abstract class MockBaseAbstract<Entity>
 {
   configureEntity: Partial<Entity>;
   protected entity: Entity;
+  constructor() {
+    this.entity = {} as Entity;
+  }
 
   abstract _construct(): void;
 

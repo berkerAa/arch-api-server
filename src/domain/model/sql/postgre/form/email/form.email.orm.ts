@@ -1,8 +1,8 @@
 import { FormSqlBaseOrm } from "../form.sql.base.orm";
 import { Column, Entity, OneToMany } from "typeorm";
 import { FormEmailSqlEntityProtocol } from "../../../../../../../../contract/protocol/domain/sql/postgre/form/email/form.email.sql.entity.protocol";
-import { ConfirmationEmailCodeOrm } from "../../confirmation/emailCode/confirmation.email.code.orm";
 import { AttributeUserOrm } from "../../attribute/user/attribute.user.orm";
+import { ConfirmationEmailCodeOrm } from "../../confirmation/emailCode/confirmation.email.code.orm";
 
 @Entity({
   name: "FormEmail",

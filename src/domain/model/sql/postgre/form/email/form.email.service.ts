@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { PostgreSqlBaseService } from "../../postgre.sql.base.service";
 import { FormEmailOrm } from "./form.email.orm";
-import { Repository } from "typeorm";
+import { Repository, SelectQueryBuilder } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
 import { DB_SOURCE } from "../../../../../../../../contract/enum/system/db.source.enum";
 
@@ -12,5 +12,8 @@ export class FormEmailService extends PostgreSqlBaseService<FormEmailOrm> {
     protected readonly repository: Repository<FormEmailOrm>,
   ) {
     super(repository);
+  }
+  override createQueryBuilder(alias = "fe"): SelectQueryBuilder<FormEmailOrm> {
+    return super.createQueryBuilder(alias);
   }
 }

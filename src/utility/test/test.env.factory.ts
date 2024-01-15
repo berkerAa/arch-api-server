@@ -1,12 +1,11 @@
 import { TestEnvFactoryProtocol } from "../../../../contract/protocol/utility/test/test.env.factory.protocol";
-import { EntityTarget, ObjectLiteral, QueryRunner } from "typeorm";
-import { Inject } from "@nestjs/common";
+import { ObjectLiteral, QueryRunner } from "typeorm";
+import { Injectable } from "@nestjs/common";
 import { QueryBase } from "../../application/query/query.base";
 import { PostgreSqlBaseService } from "../../domain/model/sql/postgre/postgre.sql.base.service";
 import { MockBaseAbstract } from "../../application/mock/mock.base.abstract";
-import { QueryProtocol } from "../../../../contract/protocol/application/query/query.protocol";
-import { PostgreSqlBaseServiceProtocol } from "../../../../contract/protocol/domain/sql/postgre/postgre.sql.base.service.protocol";
 
+@Injectable()
 export class TestEnvFactory<
   TargetParentEntityType extends ObjectLiteral,
   MockGeneratorType extends MockBaseAbstract<TargetParentEntityType>,
@@ -24,31 +23,29 @@ export class TestEnvFactory<
       QueryRunner
     >
 {
-  public readonly generatedEntity: TargetParentEntityType;
-  public readonly generator: MockGeneratorType;
-  public readonly queryInstance: QueryRunner;
-  public readonly testObject: TargetTestObjectType;
-  constructor(
-    @Inject() private _generator: MockGeneratorType,
-    @Inject() private _testObject: TargetTestObjectType,
-    @Inject() private _queryInstance: QueryRunner,
-  ) {
-    this.generator = this._generator;
-    this.testObject = this._testObject;
-    this.queryInstance = this._queryInstance;
-  }
+  public generatedEntity: TargetParentEntityType;
+  public generator: MockGeneratorType;
+  public queryInstance: QueryRunner;
+  public testObject: TargetTestObjectType;
+  constructor() {}
   connectDependencies2Transition(
     testObjectDependencyList: Array<ObjectLiteral>,
   ): void {
     testObjectDependencyList.forEach((dep) => {
-      const service: PostgreSqlBaseServiceProtocol =
-        dep.getService() as PostgreSqlBaseServiceProtocol;
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-assignment
+      const service = dep.getService();
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-assignment
+      const repository = service.getRepository();
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-call
       service.setRepository(
-        this.queryInstance.manager.getRepository(
-          this
-            .generatedEntity as unknown as EntityTarget<TargetParentEntityType>,
-        ),
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-argument
+        this.queryInstance.manager.getRepository(repository.target),
       );
     });
+  }
+  async closeResult(): Promise<void> {
+    return this.queryInstance
+      .rollbackTransaction()
+      .then(() => this.queryInstance.release());
   }
 }

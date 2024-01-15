@@ -7,7 +7,8 @@ export abstract class QueryBase<
   ServiceType extends PostgreSqlBaseService<Entity>,
 > implements QueryProtocol
 {
+  protected constructor(protected service: ServiceType) {}
   getService(): ServiceType {
-    throw new Error("Method not implemented.");
+    return this.service;
   }
 }
